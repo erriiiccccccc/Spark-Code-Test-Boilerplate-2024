@@ -19,12 +19,8 @@ function App() {
           return;
         }
         const data = await todos.json();
-        console.log("Fetched todos:", data); // Debugging output
-        if (Array.isArray(data.data)) {
-          setTodos(data.data); // Ensure it's an array
-        } else {
-          console.error("Todos response is not an array:", data.data);
-        }
+        console.log("Fetched todos:", data); 
+        setTodos(data.data); 
       } catch (e) {
         console.log('Could not connect to server. Ensure it is running. ' + e);
       }
@@ -40,15 +36,12 @@ function App() {
       </header>
 
       <div className="todo-list">
-        {todos && todos.length > 0 ? (
-          todos.map((todo, index) => (
-            <div key={index} className="todo-item">
-              <h3>{todo.title}</h3>
-              <p>{todo.description}</p>
-            </div>
-          ))
-        ) : (
-          <p>Add a Todo now! :)</p>
+        {todos.map((todo) =>
+          <Todo
+            key={todo.title + todo.description}
+            title={todo.title}
+            description={todo.description}
+          />
         )}
       </div>
 
