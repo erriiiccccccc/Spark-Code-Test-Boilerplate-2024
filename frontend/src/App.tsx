@@ -4,8 +4,10 @@ import Todo, { TodoType } from './Todo';
 
 function App() {
   const [todos, setTodos] = useState<TodoType[]>([]);
+
   // to form inputs from frontend
   const [formData, setFormData] = useState<TodoType>({ title: "", description: "" }); 
+  
   // to display status for debugging
   const [status, setStatus] = useState<string>(""); 
 
@@ -59,7 +61,6 @@ function App() {
         setStatus("Failed to add todo");
       }
     } catch (error) {
-      console.error("Network error:", error);
       setStatus("Error occurred while adding todo");
     }
   };  
