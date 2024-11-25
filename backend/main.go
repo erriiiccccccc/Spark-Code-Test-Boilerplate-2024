@@ -39,6 +39,8 @@ func PostTodos(w http.ResponseWriter, r *http.Request) {
 
 // Retrieve all todo items in the memory
 func GetTodos(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+
 	// to show all the retrieved todo items
 	response := map[string]interface{}{
 		"message": "All todos retrieved successfully",
