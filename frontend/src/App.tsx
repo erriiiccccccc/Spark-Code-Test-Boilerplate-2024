@@ -29,11 +29,13 @@ function App() {
     fetchTodos()
   }, []);
 
+  // Take user inputs and format them for POST
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  // POST user input to memory 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
   
@@ -45,7 +47,8 @@ function App() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
-  
+      
+      // if response = 200OK then success message
       if (response.ok) {
         const result = await response.json();
         console.log("Success response:", result);
@@ -67,6 +70,7 @@ function App() {
         <h1>TODO</h1>
       </header>
 
+      {/* Show all the retrieved todos */}
       <div className="todo-list">
         {todos && todos.length > 0 ? (
           todos.map((todo) =>
@@ -81,6 +85,7 @@ function App() {
         )}
       </div>
 
+      {/* Handles user inputs and post */}
       <h2>Add a Todo</h2>
       <form onSubmit={handleSubmit}>
       <input
