@@ -36,12 +36,16 @@ function App() {
       </header>
 
       <div className="todo-list">
-        {todos.map((todo) =>
-          <Todo
-            key={todo.title + todo.description}
-            title={todo.title}
-            description={todo.description}
-          />
+        {todos && todos.length > 0 ? (
+          todos.map((todo) =>
+            <Todo
+              key={todo.title + todo.description}
+              title={todo.title}
+              description={todo.description}
+            />
+          )
+        ) : (
+          <p>Add a Todo now! :)</p>
         )}
       </div>
 
