@@ -29,6 +29,38 @@ function App() {
     fetchTodos()
   }, []);
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+  
+    console.log("FormData on form submit:", JSON.stringify(formData)); // Debugging
+  
+    try {
+      const response = await fetch("http://localhost:8080/add", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+  
+      if (response.ok) {
+        const result = await response.json();
+        console.log("Success response:", result);
+        setStatus(result.message);
+        setTodos((prev) => (Array.isArray(prev) ? [...prev, formData] : [formData]));
+        setFormData({ title: "", description: "" });
+      } else {
+        setStatus("Failed to add todo");
+      }
+    } catch (error) {
+      console.error("Network error:", error);
+      setStatus("Error occurred while adding todo");
+    }
+  };  
+
   return (
     <div className="app">
       <header className="app-header">
@@ -50,11 +82,25 @@ function App() {
       </div>
 
       <h2>Add a Todo</h2>
-      <form>
-        <input placeholder="Title" name="title" autoFocus={true} />
-        <input placeholder="Description" name="description" />
-        <button>Add Todo</button>
-      </form>
+      <form onSubmit={handleSubmit}>
+      <input
+          placeholder="Title"
+          name="title"
+          value={formData.title}
+          onChange={handleInputChange}
+          autoFocus
+          required
+        />
+        <input
+          placeholder="Description"
+          name="description"
+          value={formData.description}
+          onChange={handleInputChange}
+          required
+        />
+        <button type="submit">Add Todo</button>
+        </form>
+        {status}
     </div>
   );
 }
