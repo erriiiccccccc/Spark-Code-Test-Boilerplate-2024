@@ -42,6 +42,11 @@ func PostTodos(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// checkbbox defaults to false
+	if _, exists := requestData["completed"]; !exists {
+		requestData["completed"] = false
+	}
+
 	todos = append(todos, requestData)
 
 	// success message for debugging

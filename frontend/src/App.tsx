@@ -6,7 +6,7 @@ function App() {
   const [todos, setTodos] = useState<TodoType[]>([]);
 
   // to form inputs from frontend
-  const [formData, setFormData] = useState<TodoType>({ title: "", description: "" }); 
+  const [formData, setFormData] = useState<TodoType>({ title: "", description: "", completed: false });
   
   // to display status for debugging
   const [status, setStatus] = useState<string>(""); 
@@ -56,7 +56,7 @@ function App() {
         console.log("Success response:", result);
         setStatus(result.message);
         setTodos((prev) => (Array.isArray(prev) ? [...prev, formData] : [formData]));
-        setFormData({ title: "", description: "" });
+        setFormData({ title: "", description: "", completed: false});
       } else {
         setStatus("Failed to add todo");
       }
@@ -65,6 +65,15 @@ function App() {
     }
   };  
 
+  // handle checkbox
+  const handleCheckbox = (index: number) => {
+    setTodos((prev) =>
+      prev.map((todo, i) =>
+        i === index ? { ...todo, completed: !todo.completed } : todo
+      )
+    );
+  };
+  
   return (
     <div className="app">
       <header className="app-header">
@@ -74,13 +83,20 @@ function App() {
       {/* Show all the retrieved todos */}
       <div className="todo-list">
         {todos && todos.length > 0 ? (
-          todos.map((todo) =>
-            <Todo
-              key={todo.title + todo.description}
-              title={todo.title}
-              description={todo.description}
+          todos.map((todo, index) => (
+            <div key={todo.title + todo.description + todo.completed} className="todo">
+            <div className="todo-text">
+              <p className="todo-title">{todo.title}</p>
+              <p className="todo-description">{todo.description}</p>
+            </div>
+            <input
+              type="checkbox"
+              checked={todo.completed}
+              onChange={() => handleCheckbox(index)}
+              className="custom-checkbox"
             />
-          )
+          </div>
+          ))
         ) : (
           <p>Add a Todo now! :)</p>
         )}
