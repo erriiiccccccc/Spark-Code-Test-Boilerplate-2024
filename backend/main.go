@@ -14,12 +14,13 @@ func main() {
 	http.ListenAndServe(":8080", nil)
 }
 
+// Add a todo to memory
 func PostTodos(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 
 	var requestData map[string]interface{}
 
-	// Input validation (Input must be in JSON format)
+	// Input validation
 	if err := json.NewDecoder(r.Body).Decode(&requestData); err != nil {
 		http.Error(w, "Invalid JSON format", http.StatusBadRequest)
 		return
@@ -36,7 +37,9 @@ func PostTodos(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(response)
 }
 
+// Retrieve all todo items in the memory
 func GetTodos(w http.ResponseWriter, r *http.Request) {
+	// to show all the retrieved todo items
 	response := map[string]interface{}{
 		"message": "All todos retrieved successfully",
 		"data":    todos,
